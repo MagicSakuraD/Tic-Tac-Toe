@@ -11,10 +11,7 @@ function Square({ value, className, onSquareClick }) {
   );
 }
 
-export default function Board() {
-  const [squares, setSquares] = useState(Array(9).fill(null));
-  const [xIsNext, setXIsNext] = useState(true);
-
+function Board({ xIsNext, squares, onPlay }) {
   function handleClick(i) {
     if (squares[i] || calculateWinner(squares)) {
       return;
@@ -25,8 +22,7 @@ export default function Board() {
     } else {
       nextSquares[i] = "O";
     }
-    setSquares(nextSquares);
-    setXIsNext(!xIsNext);
+    onPlay(nextSquares);
   }
 
   const winner = calculateWinner(squares);
@@ -34,7 +30,7 @@ export default function Board() {
   if (winner) {
     status = "winner: " + winner;
   } else {
-    status = "Next player" + (xIsNext ? "X" : "O");
+    status = "Next player: " + (xIsNext ? "X" : "O");
   }
 
   function calculateWinner(squares) {
@@ -62,7 +58,7 @@ export default function Board() {
   }
   return (
     <>
-      <div className="status">{status}</div>
+      <div className="status alert alert-success w-60">{status}</div>
       <div className="board-row">
         <Square
           className="rounded-tl-lg"
@@ -89,11 +85,34 @@ export default function Board() {
         />
         <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
         <Square
-          className="rounded-br-lg"
+          className="rounded-br-lg "
           value={squares[8]}
           onSquareClick={() => handleClick(8)}
         />
       </div>
     </>
+  );
+}
+
+export default function Game() {
+  const [xIsNext, setXIsNext] = useState(true);
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const currentSquares = history[history.length - 1];
+
+  function handlePlay(nextSquares) {
+    // TODO
+    setHistory([...history, nextSquares]);
+    setXIsNext(!xIsNext);
+  }
+
+  return (
+    <div className="game">
+      <div className="game-board">
+        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+      </div>
+      <div className="game-info">
+        <ol>{/*TODO*/}</ol>
+      </div>
+    </div>
   );
 }
