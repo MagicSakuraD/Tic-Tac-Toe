@@ -58,7 +58,9 @@ function Board({ xIsNext, squares, onPlay }) {
   }
   return (
     <>
-      <div className="status alert alert-success w-60">{status}</div>
+     
+      <div className="status alert alert-success w-60 text-center">{status}</div>
+      <main className="shadow-lg shadow-slate-500 rounded-lg">
       <div className="board-row">
         <Square
           className="rounded-tl-lg"
@@ -90,6 +92,7 @@ function Board({ xIsNext, squares, onPlay }) {
           onSquareClick={() => handleClick(8)}
         />
       </div>
+      </main>
     </>
   );
 }
